@@ -1,24 +1,49 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { useState } from "react";
+import ToDoList from './ToDoList';
 
 function App() {
+  const [item,setItem] = useState("");
+  const [displayitem, setDisplayItem] = useState([]);
+  function Updatelist(event){
+    setItem(event.target.value)
+  }
+
+  function DeleteItem(id){
+    setDisplayItem((oldItem) => {
+      return oldItem.filter((arrElem, index) => {
+        return index !== id;
+      })
+    })
+ }
+
+  function onClick(){
+   setDisplayItem((oldItem) => {
+   return [...oldItem, item] 
+   })
+   setItem("");
+  }
+  // setDisplayItem([...displayitem, item])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <>
+    <div className='main-div'>
+      <div className='center-div'>
+        <br></br>
+        <h1>ToDo List</h1>
+        <br></br>
+        <input type='text' placeholder='Add a Item'  value={item} onChange={Updatelist}></input>
+        <button onClick = {onClick}>+</button>
+
+        <ol>
+          {/* <li>{displayitem}</li><br></br> */}
+         { displayitem.map((itemval, index) => {
+            return <ToDoList key={index} id={index} text = {itemval} onSelect={DeleteItem}/>
+          })}
+        </ol>
+      </div>
     </div>
+    </>
   );
 }
 
